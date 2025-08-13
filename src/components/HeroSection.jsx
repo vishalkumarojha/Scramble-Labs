@@ -1,224 +1,110 @@
-import React, { useRef, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Float, Sphere, Box } from '@react-three/drei';
-import { motion } from 'framer-motion';
-import { Button } from './ui/button';
-import { ArrowRight, Zap, Rocket } from 'lucide-react';
-import gsap from 'gsap';
-
-function FloatingElements() {
-  const groupRef = useRef();
-  
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.1;
-    }
-  });
-
-  return (
-    <group ref={groupRef}>
-      <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
-        <Box position={[-3, 2, 0]} args={[0.5, 0.5, 0.5]}>
-          <meshStandardMaterial color="#6366F1" transparent opacity={0.7} />
-        </Box>
-      </Float>
-      
-      <Float speed={2} rotationIntensity={0.3} floatIntensity={0.8}>
-        <Sphere position={[3, -1, 0]} args={[0.3, 16, 16]}>
-          <meshStandardMaterial color="#8B5CF6" transparent opacity={0.6} />
-        </Sphere>
-      </Float>
-      
-      <Float speed={1.8} rotationIntensity={0.4} floatIntensity={0.6}>
-        <Box position={[0, 3, -2]} args={[0.3, 0.3, 0.3]}>
-          <meshStandardMaterial color="#00D4FF" transparent opacity={0.8} />
-        </Box>
-      </Float>
-      
-      <Float speed={1.2} rotationIntensity={0.6} floatIntensity={0.4}>
-        <Sphere position={[-2, -2, 1]} args={[0.2, 12, 12]}>
-          <meshStandardMaterial color="#10B981" transparent opacity={0.7} />
-        </Sphere>
-      </Float>
-    </group>
-  );
-}
-
-function CodeParticles() {
-  const particlesRef = useRef();
-  const particleCount = 200;
-  
-  const positions = React.useMemo(() => {
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 10;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 5;
-    }
-    return positions;
-  }, []);
-
-  useFrame((state) => {
-    if (particlesRef.current) {
-      const positions = particlesRef.current.geometry.attributes.position.array;
-      for (let i = 0; i < particleCount; i++) {
-        positions[i * 3 + 1] += Math.sin(state.clock.elapsedTime + i) * 0.01;
-      }
-      particlesRef.current.geometry.attributes.position.needsUpdate = true;
-    }
-  });
-
-  return (
-    <points ref={particlesRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={particleCount}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        color="#00D4FF"
-        size={0.05}
-        transparent
-        opacity={0.6}
-        sizeAttenuation
-      />
-    </points>
-  );
-}
+import { Button } from "./ui/button"
+import { ArrowRight, Rocket, Star, Play } from "lucide-react"
 
 export default function HeroSection() {
-  const heroRef = useRef();
-  const titleRef = useRef();
-  const subtitleRef = useRef();
-  const ctaRef = useRef();
-
-  useEffect(() => {
-    const tl = gsap.timeline();
-    
-    tl.fromTo(titleRef.current, 
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-    )
-    .fromTo(subtitleRef.current,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-      "-=0.5"
-    )
-    .fromTo(ctaRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-      "-=0.3"
-    );
-  }, []);
-
   return (
-    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background */}
-      <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <ambientLight intensity={0.3} />
-          <pointLight position={[10, 10, 10]} intensity={0.5} />
-          <pointLight position={[-10, -10, -10]} intensity={0.3} color="#6366F1" />
-          <FloatingElements />
-          <CodeParticles />
-        </Canvas>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-cyan-50">
+      {/* Enhanced background effects */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,212,255,0.1),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(99,102,241,0.08),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.06),transparent_70%)]"></div>
+
+        {/* Floating elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 rounded-full blur-xl animate-float"></div>
+        <div
+          className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-purple-400/20 to-pink-500/20 rounded-full blur-xl animate-float"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute bottom-40 left-1/4 w-24 h-24 bg-gradient-to-r from-emerald-400/20 to-teal-500/20 rounded-full blur-xl animate-float"
+          style={{ animationDelay: "4s" }}
+        ></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="space-y-8"
-        >
-          {/* Main Headline */}
-          <h1 
-            ref={titleRef}
-            className="text-6xl md:text-8xl font-bold leading-tight"
-          >
-            <span className="gradient-text">Transform</span>
-            <br />
-            <span className="text-white">Your Startup</span>
-            <br />
-            <span className="gradient-text">Vision</span>
-          </h1>
+      <div className="relative z-10 text-center max-w-7xl mx-auto px-6">
+        <div className="space-y-10 animate-slide-up">
+          {/* Enhanced badge */}
+          <div className="inline-flex items-center gap-3 glass-morphism-strong px-6 py-3 rounded-full text-sm font-medium animate-scale-in">
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 text-yellow-500 fill-current" />
+              <span className="text-slate-700">Trusted by 50+ Startups Worldwide</span>
+            </div>
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          </div>
 
-          {/* Subtitle */}
-          <p 
-            ref={subtitleRef}
-            className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
-          >
-            The strategic development partner that accelerates ambitious startups from concept to market dominance through 
-            <span className="text-primary font-semibold"> intelligent design</span>, 
-            <span className="text-primary font-semibold"> precision engineering</span>, and 
-            <span className="text-primary font-semibold"> growth-focused management</span>.
-          </p>
+          {/* Enhanced main headline */}
+          <div className="space-y-4">
+            <h1 className="heading-xl">
+              <span className="gradient-text">Transform</span>
+              <br />
+              <span className="text-slate-900">Your Startup</span>
+              <br />
+              <span className="gradient-text">Vision</span>
+            </h1>
 
-          {/* Call to Action */}
-          <div ref={ctaRef} className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button 
-              size="lg" 
-              className="magnetic-button bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg font-semibold group"
-            >
-              <Rocket className="mr-2 h-5 w-5 group-hover:animate-bounce" />
-              Accelerate Your Vision
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
+            {/* Subtitle with better typography */}
+            <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium">
+              The strategic development partner that accelerates ambitious startups from concept to market dominance
+              through
+              <span className="text-cyan-600 font-semibold"> intelligent design</span>,
+              <span className="text-blue-600 font-semibold"> precision engineering</span>, and
+              <span className="text-purple-600 font-semibold"> growth-focused management</span>.
+            </p>
+          </div>
+
+          {/* Enhanced call to action */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button
               size="lg"
-              className="magnetic-button border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg font-semibold group"
+              className="magnetic-button bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-400 hover:to-blue-500 px-10 py-6 text-lg font-semibold group rounded-xl shadow-lg"
             >
-              <Zap className="mr-2 h-5 w-5 group-hover:animate-pulse" />
-              Explore Our Process
+              <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
+              Accelerate Your Vision
+              <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+            </Button>
+
+            <Button
+              variant="outline"
+              size="lg"
+              className="magnetic-button border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-cyan-400 px-10 py-6 text-lg font-semibold group bg-white/80 backdrop-blur-sm rounded-xl shadow-lg"
+            >
+              <Play className="mr-3 h-6 w-6 group-hover:animate-pulse" />
+              Watch Demo
             </Button>
           </div>
 
-          {/* Trust Indicators */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            className="pt-12"
-          >
-            <p className="text-sm text-gray-400 mb-6">Trusted by ambitious startups worldwide</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-              <div className="glass-morphism px-6 py-3 rounded-lg">
-                <span className="text-primary font-bold text-lg">50+</span>
-                <span className="text-gray-300 ml-2">Startups Accelerated</span>
+          {/* Enhanced trust indicators */}
+          <div className="pt-16">
+            <p className="text-sm text-slate-500 mb-8 font-medium">Trusted by ambitious startups worldwide</p>
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              <div className="enhanced-card px-8 py-4 hover-lift">
+                <span className="text-cyan-600 font-bold text-2xl">50+</span>
+                <span className="text-slate-600 ml-3 font-medium">Startups Accelerated</span>
               </div>
-              <div className="glass-morphism px-6 py-3 rounded-lg">
-                <span className="text-primary font-bold text-lg">$10M+</span>
-                <span className="text-gray-300 ml-2">Funding Raised</span>
+              <div className="enhanced-card px-8 py-4 hover-lift">
+                <span className="text-blue-600 font-bold text-2xl">$10M+</span>
+                <span className="text-slate-600 ml-3 font-medium">Funding Raised</span>
               </div>
-              <div className="glass-morphism px-6 py-3 rounded-lg">
-                <span className="text-primary font-bold text-lg">99%</span>
-                <span className="text-gray-300 ml-2">Client Satisfaction</span>
+              <div className="enhanced-card px-8 py-4 hover-lift">
+                <span className="text-purple-600 font-bold text-2xl">99%</span>
+                <span className="text-slate-600 ml-3 font-medium">Client Satisfaction</span>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="animate-bounce">
-          <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
-      </motion.div>
-    </section>
-  );
-}
+      </div>
 
+      {/* Enhanced scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-6 h-10 border-2 border-cyan-400 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full mt-2 animate-pulse"></div>
+          </div>
+          <span className="text-xs text-slate-500 font-medium">Scroll to explore</span>
+        </div>
+      </div>
+    </section>
+  )
+}

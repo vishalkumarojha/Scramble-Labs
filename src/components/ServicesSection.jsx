@@ -1,11 +1,6 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Code, Palette, TrendingUp, Zap, Rocket, Target } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import React from "react"
+import { Card, CardContent, CardDescription, CardTitle } from "./ui/card"
+import { Code, Palette, TrendingUp, Rocket, Target, CheckCircle, ArrowRight } from "lucide-react"
 
 const services = [
   {
@@ -17,10 +12,11 @@ const services = [
       "Full-Stack Web Applications",
       "Mobile-First Responsive Design",
       "API Development & Integration",
-      "Performance Optimization & Scaling"
+      "Performance Optimization & Scaling",
     ],
-    color: "from-blue-500 to-cyan-500",
-    delay: 0
+    color: "from-cyan-500 to-blue-600",
+    accent: "cyan",
+    bgColor: "from-cyan-50 to-blue-50",
   },
   {
     icon: Palette,
@@ -31,10 +27,11 @@ const services = [
       "User Interface (UI) Design",
       "Brand Identity & Visual Systems",
       "Conversion Rate Optimization",
-      "Design System Development"
+      "Design System Development",
     ],
-    color: "from-purple-500 to-pink-500",
-    delay: 0.2
+    color: "from-purple-500 to-pink-600",
+    accent: "purple",
+    bgColor: "from-purple-50 to-pink-50",
   },
   {
     icon: TrendingUp,
@@ -45,189 +42,154 @@ const services = [
       "Technical Architecture Planning",
       "Growth Hacking & Analytics",
       "Team Building & Technical Hiring",
-      "Investor-Ready Documentation"
+      "Investor-Ready Documentation",
     ],
-    color: "from-green-500 to-emerald-500",
-    delay: 0.4
-  }
-];
+    color: "from-emerald-500 to-teal-600",
+    accent: "emerald",
+    bgColor: "from-emerald-50 to-teal-50",
+  },
+]
 
 function ServiceCard({ service, index }) {
-  const cardRef = useRef();
-  const isInView = useInView(cardRef, { once: true, threshold: 0.3 });
-
-  useEffect(() => {
-    if (isInView && cardRef.current) {
-      gsap.fromTo(cardRef.current,
-        { 
-          opacity: 0, 
-          y: 50,
-          rotationX: 15,
-          scale: 0.9
-        },
-        { 
-          opacity: 1, 
-          y: 0,
-          rotationX: 0,
-          scale: 1,
-          duration: 0.8,
-          delay: service.delay,
-          ease: "power3.out"
-        }
-      );
-    }
-  }, [isInView, service.delay]);
-
-  const IconComponent = service.icon;
+  const IconComponent = service.icon
+  const accentColors = {
+    cyan: "text-cyan-600",
+    purple: "text-purple-600",
+    emerald: "text-emerald-600",
+  }
 
   return (
-    <motion.div
-      ref={cardRef}
-      whileHover={{ 
-        scale: 1.05,
-        rotateY: 5,
-        z: 50
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="perspective-1000"
-    >
-      <Card className="glass-morphism border-primary/20 hover:border-primary/40 transition-all duration-300 h-full group">
-        <CardHeader className="text-center pb-4">
-          <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${service.color} flex items-center justify-center group-hover:animate-pulse-glow`}>
-            <IconComponent className="h-8 w-8 text-white" />
+    <div className="h-full animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
+      <Card className="enhanced-card h-full group overflow-hidden">
+        {/* Card header with gradient background */}
+        <div className={`bg-gradient-to-br ${service.bgColor} p-6 relative overflow-hidden`}>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="relative z-10">
+            <div
+              className={`w-16 h-16 mb-4 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center group-hover:animate-pulse shadow-lg`}
+            >
+              <IconComponent className="h-8 w-8 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-bold text-slate-900 mb-2">{service.title}</CardTitle>
+            <CardDescription className="text-slate-600 text-lg leading-relaxed">{service.description}</CardDescription>
           </div>
-          <CardTitle className="text-2xl font-bold gradient-text">
-            {service.title}
-          </CardTitle>
-          <CardDescription className="text-gray-300 text-lg">
-            {service.description}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-3">
+        </div>
+
+        <CardContent className="p-6">
+          <ul className="space-y-4">
             {service.features.map((feature, featureIndex) => (
-              <motion.li
+              <li
                 key={featureIndex}
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ 
-                  delay: service.delay + (featureIndex * 0.1),
-                  duration: 0.5
-                }}
-                className="flex items-center text-gray-300 group-hover:text-white transition-colors"
+                className="flex items-start text-slate-600 group-hover:text-slate-800 transition-colors"
               >
-                <div className="w-2 h-2 bg-primary rounded-full mr-3 animate-pulse"></div>
-                {feature}
-              </motion.li>
+                <CheckCircle className={`h-5 w-5 mr-3 mt-0.5 ${accentColors[service.accent]} flex-shrink-0`} />
+                <span className="font-medium">{feature}</span>
+              </li>
             ))}
           </ul>
+
+          <div className="mt-6 pt-6 border-t border-slate-100">
+            <button
+              className={`flex items-center text-sm font-semibold ${accentColors[service.accent]} hover:gap-3 transition-all group`}
+            >
+              Learn More
+              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </CardContent>
       </Card>
-    </motion.div>
-  );
+    </div>
+  )
 }
 
 function ProcessVisualization() {
-  const processRef = useRef();
-  const isInView = useInView(processRef, { once: true, threshold: 0.3 });
-
   const processSteps = [
-    { icon: Target, title: "Vision Alignment", duration: "Week 1" },
-    { icon: Code, title: "Rapid Development", duration: "Weeks 2-8" },
-    { icon: Rocket, title: "Market Launch", duration: "Weeks 9-12" }
-  ];
+    {
+      icon: Target,
+      title: "Vision Alignment",
+      duration: "Week 1",
+      color: "from-cyan-400 to-blue-500",
+      description: "Deep dive into your vision and requirements",
+    },
+    {
+      icon: Code,
+      title: "Rapid Development",
+      duration: "Weeks 2-8",
+      color: "from-blue-500 to-purple-500",
+      description: "Agile development with weekly reviews",
+    },
+    {
+      icon: Rocket,
+      title: "Market Launch",
+      duration: "Weeks 9-12",
+      color: "from-purple-500 to-pink-500",
+      description: "Strategic launch and optimization",
+    },
+  ]
 
   return (
-    <div ref={processRef} className="mt-20">
-      <motion.h3
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
-        className="text-3xl font-bold text-center mb-12 gradient-text"
-      >
-        The Scramble Labs Velocity Framework
-      </motion.h3>
-      
-      <div className="flex flex-col md:flex-row justify-center items-center gap-8">
+    <div className="mt-24">
+      <div className="text-center mb-16">
+        <h3 className="heading-lg gradient-text mb-4">The Scramble Labs Velocity Framework</h3>
+        <p className="text-enhanced max-w-2xl mx-auto">
+          Our proven 12-week methodology that transforms startup visions into market-ready products
+        </p>
+      </div>
+
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-12">
         {processSteps.map((step, index) => {
-          const IconComponent = step.icon;
+          const IconComponent = step.icon
           return (
             <React.Fragment key={index}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ 
-                  delay: index * 0.3,
-                  duration: 0.6,
-                  type: "spring",
-                  stiffness: 200
-                }}
-                className="text-center group"
+              <div
+                className="text-center group max-w-xs animate-scale-in"
+                style={{ animationDelay: `${index * 0.3}s` }}
               >
-                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-primary to-purple-500 flex items-center justify-center group-hover:animate-pulse-glow">
-                  <IconComponent className="h-10 w-10 text-white" />
+                <div
+                  className={`w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-r ${step.color} flex items-center justify-center group-hover:animate-pulse shadow-xl`}
+                >
+                  <IconComponent className="h-12 w-12 text-white" />
                 </div>
-                <h4 className="text-xl font-semibold text-white mb-2">{step.title}</h4>
-                <p className="text-primary font-medium">{step.duration}</p>
-              </motion.div>
-              
+                <h4 className="text-2xl font-bold text-slate-900 mb-2">{step.title}</h4>
+                <p className="text-cyan-600 font-semibold mb-3">{step.duration}</p>
+                <p className="text-slate-600 leading-relaxed">{step.description}</p>
+              </div>
+
               {index < processSteps.length - 1 && (
-                <motion.div
-                  initial={{ opacity: 0, scaleX: 0 }}
-                  animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
-                  transition={{ delay: (index + 1) * 0.3, duration: 0.8 }}
-                  className="hidden md:block w-16 h-1 bg-gradient-to-r from-primary to-purple-500 rounded-full"
-                />
+                <div className="hidden lg:block">
+                  <ArrowRight className="h-8 w-8 text-slate-300" />
+                </div>
               )}
             </React.Fragment>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
 
 export default function ServicesSection() {
-  const sectionRef = useRef();
-  const titleRef = useRef();
-  const isInView = useInView(sectionRef, { once: true, threshold: 0.1 });
-
-  useEffect(() => {
-    if (isInView && titleRef.current) {
-      gsap.fromTo(titleRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-      );
-    }
-  }, [isInView]);
-
   return (
-    <section ref={sectionRef} className="py-20 px-6 relative">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div ref={titleRef} className="text-center mb-16">
-          <motion.h2 
-            className="text-5xl md:text-6xl font-bold mb-6"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-          >
+    <section className="section-padding bg-gradient-to-b from-white via-slate-50 to-white relative overflow-hidden">
+      {/* Enhanced background effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-0 w-96 h-96 bg-gradient-to-r from-cyan-100/50 to-blue-100/50 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gradient-to-r from-purple-100/50 to-pink-100/50 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-20 animate-slide-up">
+          <h2 className="heading-lg mb-6">
             <span className="gradient-text">Complete Startup</span>
             <br />
-            <span className="text-white">Acceleration Suite</span>
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-gray-300 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
+            <span className="text-slate-900">Acceleration Suite</span>
+          </h2>
+          <p className="text-enhanced max-w-3xl mx-auto">
             Every strategy, every line of code, every design decision optimized for startup velocity and scale
-          </motion.p>
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {services.map((service, index) => (
             <ServiceCard key={index} service={service} index={index} />
           ))}
@@ -235,31 +197,34 @@ export default function ServicesSection() {
 
         <ProcessVisualization />
 
-        {/* Technology Stack Preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="mt-20 text-center"
-        >
-          <h3 className="text-3xl font-bold mb-8 gradient-text">Powered by Tomorrow's Technology</h3>
-          <div className="flex flex-wrap justify-center gap-6">
-            {['React', 'Next.js', 'Node.js', 'Python', 'AWS', 'TypeScript'].map((tech, index) => (
-              <motion.div
-                key={tech}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 1.2 + (index * 0.1), duration: 0.5 }}
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="glass-morphism px-6 py-3 rounded-full border border-primary/30 hover:border-primary/60 transition-all"
+        {/* Enhanced technology stack */}
+        <div className="mt-24 text-center">
+          <h3 className="text-3xl font-bold mb-4 gradient-text">Powered by Tomorrow's Technology</h3>
+          <p className="text-enhanced mb-12 max-w-2xl mx-auto">
+            We use cutting-edge technologies to build scalable, future-proof solutions
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {[
+              { name: "React", color: "from-blue-500 to-cyan-500" },
+              { name: "Next.js", color: "from-slate-700 to-slate-900" },
+              { name: "Node.js", color: "from-green-500 to-emerald-500" },
+              { name: "Python", color: "from-yellow-500 to-orange-500" },
+              { name: "AWS", color: "from-orange-500 to-red-500" },
+              { name: "TypeScript", color: "from-blue-600 to-indigo-600" },
+            ].map((tech, index) => (
+              <div
+                key={tech.name}
+                className="enhanced-card px-6 py-3 hover-lift animate-scale-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <span className="text-primary font-semibold">{tech}</span>
-              </motion.div>
+                <span className={`font-semibold bg-gradient-to-r ${tech.color} bg-clip-text text-transparent`}>
+                  {tech.name}
+                </span>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
-  );
+  )
 }
-

@@ -1,132 +1,139 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Navigation from './components/Navigation';
-import HeroSection from './components/HeroSection';
-import ServicesSection from './components/ServicesSection';
-import ContactSection from './components/ContactSection';
-import Footer from './components/Footer';
-// import ParticleBackground from './components/ParticleBackground';
-import ScrollProgress from './components/ScrollProgress';
-import './App.css';
+"use client"
+
+import { useEffect } from "react"
+import Navigation from "./components/Navigation"
+import HeroSection from "./components/HeroSection"
+import ServicesSection from "./components/ServicesSection"
+import ContactSection from "./components/ContactSection"
+import Footer from "./components/Footer"
+import ScrollProgress from "./components/ScrollProgress"
+import "./App.css"
 
 function App() {
   useEffect(() => {
     // Smooth scrolling for anchor links
     const handleAnchorClick = (e) => {
-      const href = e.target.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        const element = document.querySelector(href);
+      const href = e.target.getAttribute("href")
+      if (href && href.startsWith("#")) {
+        e.preventDefault()
+        const element = document.querySelector(href)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({ behavior: "smooth" })
         }
       }
-    };
+    }
 
-    document.addEventListener('click', handleAnchorClick);
-    return () => document.removeEventListener('click', handleAnchorClick);
-  }, []);
+    document.addEventListener("click", handleAnchorClick)
+    return () => document.removeEventListener("click", handleAnchorClick)
+  }, [])
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* Scroll Progress Indicator */}
+    <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
+      {/* Enhanced scroll progress indicator */}
       <ScrollProgress />
-      
-      {/* Particle Background
-      <ParticleBackground /> */}
-      
+
       {/* Navigation */}
       <Navigation />
-      
+
       {/* Main Content */}
       <main>
         {/* Hero Section */}
         <section id="hero">
           <HeroSection />
         </section>
-        
+
         {/* Services Section */}
         <section id="services">
           <ServicesSection />
         </section>
-        
-        {/* About Section */}
-        <section id="about" className="py-20 px-6">
-          <div className="max-w-7xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-5xl md:text-6xl font-bold mb-8">
-                <span className="text-white">Why Choose</span>
+
+        {/* Enhanced About Section */}
+        <section
+          id="about"
+          className="section-padding bg-gradient-to-b from-slate-50 via-white to-slate-50 relative overflow-hidden"
+        >
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 right-0 w-96 h-96 bg-gradient-to-r from-emerald-100/50 to-teal-100/50 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-gradient-to-r from-indigo-100/50 to-purple-100/50 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+            <div className="animate-slide-up">
+              <h2 className="heading-lg mb-6">
+                <span className="text-slate-900">Why Choose</span>
                 <br />
                 <span className="gradient-text">Scramble Labs?</span>
               </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+              <p className="text-enhanced max-w-3xl mx-auto mb-16">
+                We're not just another development agency. We're your strategic partner in building the future.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {[
                   {
                     title: "Startup DNA",
-                    description: "We understand the unique challenges, constraints, and opportunities that define the startup journey.",
-                    icon: "🧬"
+                    description:
+                      "We understand the unique challenges, constraints, and opportunities that define the startup journey.",
+                    icon: "🧬",
+                    color: "from-cyan-500 to-blue-600",
                   },
                   {
                     title: "Velocity Without Compromise",
-                    description: "Rapid execution doesn't mean cutting corners. Our proven frameworks ensure speed without sacrificing quality.",
-                    icon: "⚡"
+                    description:
+                      "Rapid execution doesn't mean cutting corners. Our proven frameworks ensure speed without sacrificing quality.",
+                    icon: "⚡",
+                    color: "from-blue-500 to-purple-600",
                   },
                   {
                     title: "Strategic Partnership",
-                    description: "We're not just a service provider - we're your technical co-founder and growth catalyst.",
-                    icon: "🤝"
+                    description:
+                      "We're not just a service provider - we're your technical co-founder and growth catalyst.",
+                    icon: "🤝",
+                    color: "from-purple-500 to-pink-600",
                   },
                   {
                     title: "Future-Proof Solutions",
-                    description: "Every solution we build is designed to scale with your success, from MVP to market leader.",
-                    icon: "🚀"
-                  }
+                    description:
+                      "Every solution we build is designed to scale with your success, from MVP to market leader.",
+                    icon: "🚀",
+                    color: "from-emerald-500 to-teal-600",
+                  },
                 ].map((feature, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2, duration: 0.6 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.05, y: -10 }}
-                    className="glass-morphism p-6 rounded-lg border border-primary/20 hover:border-primary/40 transition-all"
+                    className="enhanced-card p-8 text-center animate-scale-in hover-lift"
+                    style={{ animationDelay: `${index * 0.2}s` }}
                   >
-                    <div className="text-4xl mb-4">{feature.icon}</div>
-                    <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                    <p className="text-gray-300">{feature.description}</p>
-                  </motion.div>
+                    <div className="text-5xl mb-6">{feature.icon}</div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">{feature.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                    <div className={`w-full h-1 bg-gradient-to-r ${feature.color} rounded-full mt-6`}></div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
-        
-        {/* Process Section */}
-        <section id="process" className="py-20 px-6 bg-gradient-to-b from-transparent via-primary/5 to-transparent">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-5xl md:text-6xl font-bold mb-8">
-                <span className="text-white">Our</span>
+
+        {/* Enhanced Process Section */}
+        <section id="process" className="section-padding bg-white relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-rose-100/50 to-pink-100/50 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-violet-100/50 to-purple-100/50 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-20 animate-slide-up">
+              <h2 className="heading-lg mb-6">
+                <span className="text-slate-900">Our</span>
                 <br />
                 <span className="gradient-text">Proven Process</span>
               </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              <p className="text-enhanced max-w-3xl mx-auto">
                 A battle-tested methodology that transforms startup visions into market-ready products
               </p>
-            </motion.div>
-            
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
@@ -138,8 +145,10 @@ function App() {
                     "Comprehensive discovery sessions",
                     "Market analysis and competitive research",
                     "Technical architecture planning",
-                    "Project roadmap and milestone definition"
-                  ]
+                    "Project roadmap and milestone definition",
+                  ],
+                  color: "from-cyan-400 to-blue-500",
+                  bgColor: "from-cyan-50 to-blue-50",
                 },
                 {
                   phase: "Phase 2",
@@ -150,8 +159,10 @@ function App() {
                     "Sprint-based development cycles",
                     "Real-time collaboration and feedback",
                     "Continuous testing and quality assurance",
-                    "Performance monitoring and optimization"
-                  ]
+                    "Performance monitoring and optimization",
+                  ],
+                  color: "from-blue-500 to-purple-500",
+                  bgColor: "from-blue-50 to-purple-50",
                 },
                 {
                   phase: "Phase 3",
@@ -162,55 +173,59 @@ function App() {
                     "Launch strategy development",
                     "Performance monitoring setup",
                     "User feedback integration",
-                    "Continuous improvement planning"
-                  ]
-                }
+                    "Continuous improvement planning",
+                  ],
+                  color: "from-purple-500 to-pink-500",
+                  bgColor: "from-purple-50 to-pink-50",
+                },
               ].map((phase, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.3, duration: 0.8 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                  className="glass-morphism p-8 rounded-lg border border-primary/20 hover:border-primary/40 transition-all"
+                  className="enhanced-card overflow-hidden animate-slide-up"
+                  style={{ animationDelay: `${index * 0.2}s` }}
                 >
-                  <div className="text-center mb-6">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {index + 1}
+                  <div className={`bg-gradient-to-br ${phase.bgColor} p-6 relative`}>
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full -translate-y-12 translate-x-12"></div>
+                    <div className="relative z-10">
+                      <div
+                        className={`w-16 h-16 mb-4 bg-gradient-to-r ${phase.color} rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg`}
+                      >
+                        {index + 1}
+                      </div>
+                      <span className="text-cyan-600 font-semibold text-sm">{phase.phase}</span>
+                      <h3 className="text-2xl font-bold text-slate-900 mt-2 mb-2">{phase.title}</h3>
+                      <p className="text-purple-600 font-semibold">{phase.duration}</p>
                     </div>
-                    <span className="text-primary font-semibold text-sm">{phase.phase}</span>
-                    <h3 className="text-2xl font-bold text-white mt-2">{phase.title}</h3>
-                    <p className="text-primary font-medium">{phase.duration}</p>
                   </div>
-                  
-                  <p className="text-gray-300 mb-6 text-center">{phase.description}</p>
-                  
-                  <ul className="space-y-2">
-                    {phase.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start text-gray-300">
-                        <div className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
+
+                  <div className="p-6">
+                    <p className="text-slate-600 mb-6 leading-relaxed">{phase.description}</p>
+
+                    <ul className="space-y-3">
+                      {phase.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start text-slate-600">
+                          <div className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                          <span className="font-medium">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
-        
+
         {/* Contact Section */}
         <section id="contact">
           <ContactSection />
         </section>
       </main>
-      
+
       {/* Footer */}
       <Footer />
     </div>
-  );
+  )
 }
 
-export default App;
-
+export default App

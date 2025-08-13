@@ -5,7 +5,7 @@ import HeroSection from './components/HeroSection';
 import ServicesSection from './components/ServicesSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
-import ParticleBackground from './components/ParticleBackground';
+// import ParticleBackground from './components/ParticleBackground';
 import ScrollProgress from './components/ScrollProgress';
 import './App.css';
 
@@ -32,8 +32,8 @@ function App() {
       {/* Scroll Progress Indicator */}
       <ScrollProgress />
       
-      {/* Particle Background */}
-      <ParticleBackground />
+      {/* Particle Background
+      <ParticleBackground /> */}
       
       {/* Navigation */}
       <Navigation />
